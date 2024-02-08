@@ -1,0 +1,164 @@
+// Vnořené dokumenty
+
+use("moviedb")
+
+db.movies.drop()
+
+db.movies.insertMany([{
+    title: "Dracula",
+    ratings: {
+        mean: 7.5,
+        median: 9,
+        average: 7.4
+    }
+}, {
+    title: "The Godfather",
+    ratings: {
+        mean: 8,
+        median: 10,
+        average: 9.2
+    }
+}, {
+    title: "Solyaris",
+    ratings: {
+        mean: 8,
+        median: 8
+    }
+}, {
+    title: "The Matrix",
+    ratings: null
+}, {
+    title: "Cloud Atlas"
+}])
+
+
+db.movies.find()
+
+// Rovnost dokumentů:
+db.movies.find({
+    ratings: {
+        $eq: {
+            mean: 8,
+            median: 8
+        }
+    }
+})
+
+// Zkráceně:
+db.movies.find({
+    ratings: {
+        mean: 8,
+        median: 8
+    }
+})
+
+// Záleží na pořadí položek:
+db.movies.find({
+    ratings: {
+        median: 8,
+        mean: 8
+    }
+})
+
+// Tečková notace:
+db.movies.find({
+    "ratings.mean": 8
+})
+
+// Konujunkce:
+db.movies.find({
+    $and: [{
+        "ratings.mean": 8
+    }, {
+        "ratings.median": 8
+    }]
+})
+
+// Zkráceně:
+db.movies.find({
+    "ratings.mean": 8,
+    "ratings.median": 8
+})
+
+// Projekce:
+db.movies.find({}, {
+    title: 1,
+    "ratings.mean": 1
+})
+
+// Nebo:
+db.movies.find({}, {
+    title: 1,
+    ratings: {
+        mean: 1
+    }
+})
+
+// Změny:
+db.movies.find({
+    title: "Dracula"
+})
+
+db.movies.updateMany({
+    title: "Dracula"
+}, {
+    $set: {
+        "ratings.mean": 8
+    }
+})
+
+db.movies.find({
+    title: "Dracula"
+})
+
+db.movies.updateMany({
+    title: "Dracula"
+}, {
+    $unset: {
+        "ratings.mean": 1
+    }
+})
+
+db.movies.find({
+    title: "Dracula"
+})
+
+// Vytvoří vnořený dokument:
+db.movies.find({
+    title: "Cloud Atlas"
+})
+
+db.movies.updateMany({
+    title: "Cloud Atlas"
+}, {
+    $set: {
+        "ratings.mean": 8
+    }
+})
+
+db.movies.find({
+    title: "Cloud Atlas"
+})
+
+
+// Chyba:
+// db.movies.updateMany({ title: "The Matrix" }, { $set: { "ratings.mean": 8 } })
+
+// V pořádku:
+db.movies.find({
+    title: "The Matrix"
+})
+
+db.movies.updateMany({
+    title: "The Matrix"
+}, {
+    $set: {
+        "ratings": {
+            "mean": 8
+        }
+    }
+})
+
+db.movies.find({
+    title: "The Matrix"
+})

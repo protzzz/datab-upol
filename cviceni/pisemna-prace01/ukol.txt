@@ -1,0 +1,12 @@
+Instructions
+Vytvořte tabulku pro uložení těchto záznamů (poté tyto záznamy do tabulky vložte) viz obrázek.
+
+Upravte záznamy takto (pomocí SQL příkazů):
+ - Odstraňte studenty, kteří mají nula bodů.
+ - Všem studentům přičtěte 1 bod.
+ - Studentům, kteří získali alespoň 15 bodů nastavte narokNaZ na 1.
+
+Vytvořte tyto dotazy:
+ - Vyberte studenty, jejichž příjmení obsahuje písmeno U (malé nebo velké).
+ - Zobrazte jméno a příjmení všech žen, které získali více než 10 bodů.
+ - Vyberte všechny studenty muže, kteří nezískali zápočet (nemají nic ve sloupci DatumZ).

@@ -1,0 +1,104 @@
+// Pole obsahující pole
+
+use("moviedb")
+
+db.movies.drop()
+
+db.movies.insertMany([{
+    title: "Apocalypse Now",
+    awards: [
+            [8, 2],
+            [9, 2],
+            [4, 3]
+        ] // [nominace, výhry]
+}, {
+    title: "The Godfather",
+    awards: [
+        [10, 3],
+        [5, 1],
+        [7, 6]
+    ]
+}, {
+    title: "Bram Stoker's Dracula",
+    awards: [
+        [4, 3],
+        [4]
+    ]
+}])
+
+db.movies.find()
+
+db.movies.find({
+    "awards.1.1": {
+        $exists: true
+    }
+})
+
+db.movies.find({
+    "awards.2.1": {
+        $exists: false
+    }
+})
+
+
+db.movies.find({
+    "awards.0.0": {
+        $eq: 10
+    }
+})
+
+// Zkráceně:
+db.movies.find({
+    "awards.0.0": 10
+})
+
+db.movies.find({
+    "awards.1": {
+        $eq: [ 4 ]
+    }
+})
+
+// Zkráceně:
+db.movies.find({
+    "awards.1": [ 4 ]
+})
+
+db.movies.find({
+    awards: {
+        $elemMatch: {
+            $eq: [9, 2]
+        }
+    }
+})
+
+// Zkráceně
+db.movies.find({
+    awards: [9, 2]
+})
+
+db.movies.find({
+    awards: {
+        $elemMatch: {
+            $elemMatch: {
+                $eq: 4
+            }
+        }
+    }
+})
+
+db.movies.find({
+    "awards.0.0": {
+        $in: [8, 10]
+    }
+})
+
+
+db.movies.find({
+    awards: {
+        $elemMatch: {
+            $elemMatch: {
+                $in: [2, 5]
+            }
+        }
+    }
+})

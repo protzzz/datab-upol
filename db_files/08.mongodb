@@ -1,0 +1,60 @@
+// Základy MongoDB
+
+// Přepneme aktuální databázi:
+use("moviedb")
+
+// Případně smažeme kolekci:
+db.movies.drop()
+
+// Přidáme dokument:
+db.movies.insertOne({ _id: 1, title: "Dracula", year: 1992 })
+
+// Zjistíme dokumenty v kolekci:
+db.movies.find()
+
+// Necháme vytvořit identifikátor:
+db.movies.insertOne({ title: "The Godfather", year: 1972 })
+
+// Dokumenty mohou mít různé názvy položek:
+db.movies.insertOne({ title: "The Matrix" })
+
+db.movies.insertOne({ 
+  title: "Cloud Atlas", 
+  directors: [ "Lana Wachowski", "Tom Tykwer", "Lilly Wachowski" ] 
+})
+
+// Vložíme více dokumentů najednou:
+db.movies.insertMany([
+  {
+    title: "The Conversation",
+    year: 1974
+  }, 
+  {
+    title: "Apocalypse Now",
+    year: 1979
+
+  }
+])
+
+// Dokument obsahující pole dokumentů:
+db.movies.insertOne({
+  title: "The Fifth Element",
+  year: 1997,
+  actors: [
+    {
+      name: "Bruce Willis",
+      birth: 1955,
+      favorite: true
+    }, 
+    {
+      name: "Gary Oldman",
+      birth: 1958
+    }, 
+    {
+      name: "Milla Jovovich",
+      gender: "female"
+    }
+  ]
+})
+
+db.movies.find()

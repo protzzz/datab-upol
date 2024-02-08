@@ -1,0 +1,64 @@
+# Základní dotazy
+
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match_all": { }
+  }
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "two"
+      }
+    }
+  }
+}
+
+
+###
+# Jaké knihy mají v názvu slovo two nebo king?
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "two king"
+      }
+    }
+  }
+}
+
+###
+# Zkráceně:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": "two king"
+    }
+  }
+}
+
+###
+# Musí obsahovat obě slova:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "two towers",
+        "operator": "AND"
+      }
+    }
+  }
+}

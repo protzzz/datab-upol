@@ -1,0 +1,262 @@
+# Složené podmínky
+# Testovací index:
+DELETE {{host}}/book HTTP/1.1
+
+###
+PUT {{host}}/book HTTP/1.1
+
+{
+  "mappings":{
+    "properties": {
+      "tags": { "type": "keyword" },
+      "title": { "type": "text" }
+    }
+  }
+}
+
+###
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "title": "The Fellowship of the Ring",
+  "tags": ["fantasy", "english"]
+}
+
+###
+# Jaká kniha má cedulku "fantasy"?
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "tags": { 
+        "value": "fantasy"
+      }
+    }
+  }
+}
+
+###
+# Jaká kniha je anglicky?
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "tags": { 
+        "value":  "english"
+      }
+    }
+  }
+}
+
+###
+# Přidáme další dokument:
+PUT {{host}}/book/_doc/2 HTTP/1.1
+
+{
+  "title": "The Witcher",
+  "tags": ["fantasy", "polish"]
+}
+
+###
+
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "must" : {
+        "term" : {
+          "tags" : { "value" : "english" }
+        } 
+      }
+    }
+  }
+}
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "must" : {
+        "term" : {
+          "tags" : { "value" : "fantasy" }
+        } 
+      }
+    }
+  }
+}
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "must" : [
+        {
+          "term" : { "tags" : { "value" : "fantasy" } } 
+        }, {
+          "term": { "tags": { "value" : "polish" } }
+        }
+      ]
+    }
+  },
+  "explain": true
+}
+
+###
+
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "filter" : {
+        "term" : {
+          "tags" : { "value": "english" }
+        } 
+      }
+    }
+  }
+}
+
+###
+
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "must_not" : {
+        "term" : {
+          "tags" : { "value" : "english" }
+        } 
+      }
+    }
+  }
+}
+
+###
+# Přidáme knihy:
+PUT {{host}}/book/_doc/3 HTTP/1.1
+
+{
+  "title": "Foundation",
+  "tags": ["scifi", "american"]
+}
+
+###
+PUT {{host}}/book/_doc/4 HTTP/1.1
+
+{
+  "title": "1984",
+  "tags": ["scifi", "english"]
+}
+
+###
+
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "should" : [ 
+        { "term" : { "tags" : { "value" : "english" } } }, 
+        { "term" : { "tags" : { "value" : "fantasy" } } }
+      ]
+    }
+  },
+  "explain": true
+}
+
+###
+
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "should" : [ 
+        { "term" : { "tags" : { "value" : "english" } } }, 
+        { "term" : { "tags" : { "value" : "scifi" } } }
+      ]
+    }
+  },
+  "explain": true
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "term" : { "tags" : { "value" : "scifi" } }
+      },
+      "should": {
+        "term" : { "tags" : { "value" : "english" } }
+      }
+    }
+  }
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "must": {
+        "term" : { "tags" : { "value" : "scifi" } }
+      },
+      "should": {
+        "term" : { "tags" : { "value" : "english" } }
+      }
+    }
+  },
+  "explain": true
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "term" : { "tags" : { "value" : "scifi" } }
+      },
+      "should": [
+        {
+          "term" : { "tags" : { "value" : "english" } }
+        }, {
+          "term" : { "tags" : { "value" : "polish" } }
+        }
+      ],
+      "minimum_should_match": 1
+    }
+  }
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "bool": {
+      "must_not": {
+        "term" : { "tags" : { "value" : "scifi" } }
+      },
+      "should": [
+        {
+          "term" : { "tags" : { "value" : "english" } }
+        }, {
+          "term" : { "tags" : { "value" : "american" } }
+        }
+      ]
+    }
+  }
+}

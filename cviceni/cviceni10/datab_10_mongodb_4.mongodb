@@ -1,0 +1,254 @@
+use("skola")
+db.osoby.find()
+db.osoby.drop()
+db.zapsane.drop()
+db.predmety.drop()
+
+db.osoby.insertMany([
+{
+"_id":0,
+"jmeno": "Jiří",
+"prijmeni": "Zacpal",
+"rocnik": 2,
+"datum_zahajeni_studia": {"$date": "2021-01-14T23:00:00Z"},
+"stav": "studuje",
+"pohlavi": "muž",
+"kredity":15
+},
+{
+"_id":1,
+"jmeno": "Martina",
+"prijmeni": "Kučerová",
+"rocnik": 1,
+"stav": "studuje",
+"pohlavi": "žena",
+"kredity":21
+},
+{
+"_id":3,
+  "jmeno": "Karel","prijmeni": "Svoboda",
+"rocnik": 3,
+"datum_zahajeni_studia": {"$date": "2021-11-24T08:36:34.169Z"},
+"stav": "studuje",
+ "pohlavi": "muž",
+ "kredity":76
+ },
+{
+"_id":4,
+"jmeno": "Pavel",
+"prijmeni": "Novák",
+"rocnik": 1,
+"stav": "nestuduje",
+"pohlavi": "muž",
+"kredity":19
+ }
+   ] )
+
+
+
+
+db.osoby.find({
+              $expr:{
+                $gt:[
+                  "$kredity",59
+                  ]
+                      }
+              })
+
+db.osoby.find({
+              $expr:{
+                $let:{
+                  vars:{zapocet:{ $cond: { if: {$gt:["$kredity",59]}, then: true, else: false } }},
+                  in:{$eq:["$$zapocet",true]}
+                }
+              }
+          })
+
+db.osoby.aggregate([{
+  $match:{"pohlavi":"muž"}
+}])
+
+db.osoby.aggregate([{
+  $match:{"pohlavi":"muž"}
+},
+{$count:"celkem"}])
+
+db.osoby.aggregate([{
+  $group:{_id:"$pohlavi"}
+}])
+
+db.osoby.aggregate([{
+  $group:{_id:["$pohlavi","$rocnik"]}
+}])
+
+db.osoby.aggregate([{
+  $group:{_id:{pohlavi:"$pohlavi",rocnik:"$rocnik"}}
+}])
+
+db.osoby.aggregate([{
+  $group:{_id:"$pohlavi",
+          pocet:{$count:{}}
+        }
+}])
+
+db.osoby.aggregate([{
+  $group:{_id:"$pohlavi",
+          pocet:{$count:{}},
+          celkem:{$sum:"$kredity"}
+        }    
+}])
+
+db.osoby.aggregate([{
+  $group:{_id:"$pohlavi",
+          pocet:{$count:{}},
+          prumer:{$avg:"$kredity"}
+        }    
+}])
+
+db.osoby.aggregate([{
+  $group:{_id:"$pohlavi",
+          pocet:{$count:{}},
+          prumer:{$avg:"$kredity"},
+          max:{$max:"$kredity"}
+        }    
+}])
+
+db.osoby.aggregate([{
+  $sort:{prijmeni:1}
+}])
+
+db.osoby.aggregate([{
+  $sort:{jmeno:-1}
+}])
+
+db.osoby.aggregate([{
+  $sort:{pohlavi:1,jmeno:-1}
+}])
+
+db.osoby.aggregate([{
+  $sort:{jmeno:-1}
+},
+{$limit:2}
+])
+
+db.osoby.aggregate([{
+  $sort:{jmeno:-1}
+},
+{$skip:2},
+{$limit:2}
+])
+
+db.osoby.aggregate([{
+  $sort:{jmeno:-1}
+},
+{$limit:2},
+{$skip:2}
+])
+
+db.osoby.aggregate([{
+  $project: {
+    _id:0,
+    jmeno:1,
+    prijmeni:1  
+  }
+}])
+
+db.osoby.aggregate([{
+  $addFields: {
+    chybi: {$subtract:[60,"$kredity"]}
+  }
+}])
+
+db.osoby.aggregate([{
+  $project: {
+    _id:0,
+    jmeno:1,
+    prijmeni:1,
+    chybi: {$subtract:[60,"$kredity"]}  
+  }
+}])
+
+db.zapsane.insertMany([
+{"_id":0,"zkratka":"KMI/DATAB","ukoncen":true,"student":0},
+{"_id":1,"zkratka":"KMI/STRUP","ukoncen":false,"student":0},
+{"_id":2,"zkratka":"KMI/ZPP1","ukoncen":false,"student":1},
+{"_id":3,"zkratka":"KMI/WEBA","ukoncen":true,"student":1},
+{"_id":4,"zkratka":"KMI/STRUP","ukoncen":true,"student":1},
+{"_id":5,"zkratka":"KMI/DATAB","ukoncen":false,"student":2},
+{"_id":6,"zkratka":"KMI/ZPP1","ukoncen":true,"student":2},
+{"_id":7,"zkratka":"KMI/WEBA","ukoncen":true,"student":3},
+{"_id":8,"zkratka":"KMI/ZPC1","ukoncen":false,"student":3}
+  ])
+
+db.zapsane.aggregate([{
+    $lookup: {
+        from: "osoby",
+        localField: "student",
+        foreignField: "_id",
+        as: "student"
+    }
+}])
+
+db.predmety.insertMany([
+{"_id":0,"zkratka":"KMI/DATAB","ukoncen":true,"studenti":[0,1,2]},
+{"_id":1,"zkratka":"KMI/STRUP","ukoncen":false,"studenti":[1,2,4]},
+{"_id":2,"zkratka":"KMI/ZPP1","ukoncen":false,"studenti":[3,1]},
+{"_id":4,"zkratka":"KMI/ZPC1","ukoncen":false,"studenti":[3,2]}
+  ])
+
+db.predmety.aggregate([{
+    $lookup: {
+        from: "osoby",
+        let: {
+            studenti: "$studenti"
+        },
+        pipeline: [{
+                $match: {
+                    $expr: {
+                        $in: ["$_id", "$$studenti"]
+                    }
+                }
+            }
+        ],
+        as: "studenti"
+    }
+}])
+
+db.zamestnanci.insertMany([
+{
+"_id":0,
+"jmeno": "Jan",
+"prijmeni": "Bumba",
+"hodinova_mzda": 250,
+"hodiny": 30,
+"funkce": "programátor",
+"oddělení": "IT"
+},
+{
+"_id":1,
+"jmeno": "Věra",
+"prijmeni": "Pokorná",
+"hodinova_mzda": 350,
+"hodiny": 50,
+"funkce": "ekonom",
+"oddělení": "ekonomické"
+},
+{
+"_id":2,
+"jmeno": "František",
+"prijmeni": "Novák",
+"hodinova_mzda": 300,
+"hodiny": 40,
+"funkce": "analytik",
+"oddělení": "IT"
+},
+{
+"_id":3,
+"jmeno": "Ivan",
+"prijmeni": "Možný",
+"hodinova_mzda": 150,
+"hodiny": 57,
+"funkce": "ekonom",
+"oddělení": "ekonomické"
+}
+   ] )

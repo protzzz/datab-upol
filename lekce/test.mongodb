@@ -1,0 +1,19 @@
+use('moviedb')
+
+// db.movies.find({ actors: { $size: 1 } })
+
+// db.movies.find({}, { title: 1, actors: { $elemMatch: { $regex: /ary/ } } })
+
+// db.movies.find({
+//     actors: {
+//         $elemMatch: {
+//             $regex: /ary/
+//         }
+//     }
+// }, {
+//     "actors.$": 1
+// })
+
+// db.movies.find({}, { _id: 0, title: 1 })
+
+db.movies.find({}, { title: 0 })

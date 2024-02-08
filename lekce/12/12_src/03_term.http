@@ -1,0 +1,67 @@
+# Termy
+# Testovací index
+DELETE {{host}}/book HTTP/1.1
+
+###
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "title": "The Fellowship of the Ring"
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "title": { 
+        "value": "fellowship"
+      }
+    }
+  }
+}
+
+###
+# Zdvojnásobíme skóre:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "title": { 
+        "value": "fellowship",
+        "boost": 2
+      }
+    }
+  },
+  "explain": true
+}
+
+###
+# Nic nenajde
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "title": { 
+        "value": "Fellowship"
+      }
+    }
+  }
+}
+
+###
+# Nic nenajde
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "title": { 
+        "value": "fellowship of"
+      }
+    }
+  }
+}

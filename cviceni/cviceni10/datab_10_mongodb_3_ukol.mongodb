@@ -1,0 +1,29 @@
+db.knihy.insertMany([
+{nazev:"Stopařův průvodce po galaxii", vydavatel: "MF", rok_vydani: 1985, pocet_stran: 214, cena: 120, zanr: "scifi", typ: "kniha",autor:{jmeno:"Adam",prijmeni:"Douglas",narodnost:"UK"},vypujcka:["Karel","Jirka","Pavel"]}, 
+{nazev:"Pán prstenů - dvě věže", vydavatel: "MF", rok_vydani: 1948, pocet_stran: 251, cena: 240, zanr: "fantasy", typ: "kniha",autor:{jmeno:"J.R.R.",prijmeni:"Tolkien",narodnost:"UK"},vypujcka:["Karel"]}, 
+{nazev:"Kedrigern a hlas pro princeznu", vydavatel: "MF", rok_vydani: 1996, pocet_stran: null, cena: 53, zanr: "fantasy", typ: "kniha",autor:{jmeno:"J.R.R.",prijmeni:"Tolkien",narodnost:"UK"},vypujcka:["Jirka"]}, 
+{nazev:"Hobit", vydavatel: "MF", rok_vydani: 1950, pocet_stran: 410, cena: 178, zanr: "fantasy", typ: "kniha",autor:{jmeno:"J.R.R.",prijmeni:"Tolkien",narodnost:"UK"},vypujcka:["Pavel"]}, 
+{nazev:"Barva kouzel", vydavatel: "Talpress", rok_vydani: 1989, pocet_stran: 221, cena: 358, zanr: "fantasy", typ: "ebook",autor:{jmeno:"Terry",prijmeni:"Pratchett",narodnost:"UK"},vypujcka:["Karel","Marie"]},
+{nazev:"Stráže! Stráže!", vydavatel: "Talpress", rok_vydani: 2000, pocet_stran: null, cena: 214, zanr: "fantasy", typ: "ebook",autor:{jmeno:"Terry",prijmeni:"Pratchett",narodnost:"UK"},vypujcka:["Karel","Jirka","Pavel"]}, 
+{nazev:"Lehké fantastično", vydavatel: "Talpress", rok_vydani: 1999, pocet_stran: 145, cena: 415, zanr: "fantasy", typ: "ebook",autor:{jmeno:"Terry",prijmeni:"Pratchett",narodnost:"UK"},vypujcka:[,"Jirka","Jitka"]} 
+])
+
+
+db.knihy.find({}, {nazev:1, "autor.jmeno":1, "autor.prijmeni":1, vydavatel:1})
+db.knihy.find({}, {nazev:1, "autor.jmeno":"Terry", "autor.prijmeni":"Pratchett"})
+db.knihy.aggregate([
+    {
+      $project: {
+        _id: 1,
+        nazev: 1,
+        pocet_vypujcek: { $size: "$vypujcka" }
+      }
+    },
+    {
+      $match: {
+        pocet_vypujcek: 1
+      }
+    }
+  ])
+  
+

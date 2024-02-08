@@ -1,0 +1,32 @@
+
+# Základní práce s dokumenty
+# Přidání dokumentu:
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Fellowship of the Ring",
+  "series": "The Lord of the Rings"
+}
+
+###
+# Získání dokumentu: GET /<index>/_doc/<id>
+
+GET {{host}}/book/_doc/1 HTTP/1.1
+
+
+###
+# Odebrání dokumentu: DELETE <index>/_doc/<id>
+
+DELETE {{host}}/book/_doc/1 HTTP/1.1
+
+###
+# Přidání s automatickým identifikátorem: 
+
+POST {{host}}/book/_doc/ HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Fellowship of the Ring",
+  "series": "The Lord of the Rings"
+}

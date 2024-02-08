@@ -1,0 +1,121 @@
+# Levenštajnova vzdálenost
+
+# Testovací index:
+DELETE {{host}}/book HTTP/1.1
+
+###
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "title": "The Fellowship of the Ring"
+}
+
+###
+
+PUT {{host}}/book/_doc/2 HTTP/1.1
+
+{
+  "title": "The Return of the King"
+}
+
+###
+# Nenajde druhý dokument:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "king"
+      }
+    }
+  }
+}
+###
+# Zdvojnásobené skóre:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "king",
+        "boost": 2
+      }
+    }
+  },
+  "explain": true
+}
+
+###
+# Připustíme jednu editační chybu:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "king",
+        "fuzziness": 1
+      }
+    }
+  }
+}
+###
+# S vysvětlením:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "king",
+        "fuzziness": 1
+      }
+    }
+  },
+  "explain": true
+}
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "king ruturn",
+        "fuzziness": 1
+      }
+    }
+  }
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "king felowship",
+        "fuzziness": 1,
+        "operator": "AND"
+      }
+    }
+  }
+}
+
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "kink",
+        "fuzziness": "2"
+      }
+    }
+  }
+}

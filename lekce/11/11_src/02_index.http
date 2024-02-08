@@ -1,0 +1,12 @@
+# Základní práce s indexem
+
+# Vytvoření indexu:
+PUT {{host}}/book HTTP/1.1
+
+###
+# Informace o indexu:
+GET {{host}}/book HTTP/1.1
+
+###
+# Smazání indexu: 
+DELETE {{host}}/book HTTP/1.1

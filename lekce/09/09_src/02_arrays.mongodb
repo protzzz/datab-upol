@@ -1,0 +1,173 @@
+// Práce s poli
+
+use("moviedb")
+
+db.movies.drop()
+
+db.movies.insertMany([
+  {
+    title: "The Fifth Element",
+    actors: [ "Bruce Willis", "Gary Oldman", "Milla Jovovich" ]
+  },
+  {
+    title: "Pulp Fiction",
+    actors: [ "Bruce Willis", "John Travolta" ]
+  },
+  {
+    title: "Dracula",
+    actors: [ "Gary Oldman" ]
+  },
+  {
+    title: "The Dark Knight",
+    actors: "Gary Oldman"
+  },
+  { title: "The Matrix", actors: [] },
+  { title: "The Conversation" } ])
+
+db.movies.find()
+
+// Hodnota položky musí být zadané pole:
+db.movies.find({ actors: [ "Bruce Willis", "John Travolta" ] })
+
+// Nic nenajde:
+db.movies.find({ actors: [ "John Travolta", "Bruce Willis" ] })
+
+// Existence prvku splňujícího podmínku.
+db.movies.find({ actors: { $elemMatch: { $eq: "Gary Oldman" } } })
+
+// Alespoň jeden prvek je v poli:
+db.movies.find({ actors: { $elemMatch: { $in: [ "John Travolta" , "Milla Jovovich" ] } } })
+
+// Pole hodnot jako více položek stejného názvu:
+db.movies.find({ actors: { $eq: "Gary Oldman" } })
+
+// Zkráceně:
+db.movies.find({ actors: "Gary Oldman" })
+
+// Každý prvek nesplňuje podmínku:
+db.movies.find({ actors: { $not: { $eq: "Gary Oldman" } } })
+
+// Zkráceně:
+db.movies.find({ actors: { $ne: "Gary Oldman" } })
+
+// Ani jeden prvek není v poli:
+db.movies.find({ actors: { $nin: [ "John Travolta" , "Milla Jovovich" ] } })
+
+// Co bude výsledkem?
+db.movies.find({ actors: { $elemMatch: { $nin: [ "John Travolta" , "Milla Jovovich" ] } } })
+
+// Prvek pole splňující obě podmínky:
+db.movies.find({ actors: { $elemMatch: { $regex: /Bruce/, $eq: "Gary Oldman" } } })
+
+// Pole splňující obě podmínky:
+db.movies.find({ actors: { $regex: /Bruce/, $eq: "Gary Oldman" } })
+
+// Ekvivalentní:
+db.movies.find({
+    $and: [{
+        actors: {
+            $elemMatch: {
+                $regex: /Bruce/
+            }
+        }
+    }, {
+        actors: {
+            $elemMatch: {
+                $eq: "Gary Oldman"
+            }
+        }
+    }]
+})
+
+// Kdy je typ pole?
+db.movies.find({ actors: { $type: "array" } })
+
+db.movies.find({ actors: { $all: ["John Travolta", "Bruce Willis"] } })
+
+// Ekvivalentní:
+db.movies.find({
+    $and: [{
+        actors: "John Travolta"
+    }, {
+        actors: "Bruce Willis"
+    }]
+})
+
+// Velikost pole je jedna:
+db.movies.find({ actors: { $size: 1 } })
+
+
+// Necháme položku pouze pokud splňuje podmínku.
+// V kladném případě navíc v poli zůstane pouze první prvek 
+// splňující podmínku.
+db.movies.find({}, { title: 1, actors: { $elemMatch: { $regex: /ary/ } } })
+
+// V poli zůstane pouze první prvek splňující podmínku:
+db.movies.find({
+    actors: {
+        $elemMatch: {
+            $regex: /ary/
+        }
+    }
+}, {
+    "actors.$": 1
+})
+
+// Zkratka za:
+db.movies.find({
+    actors: {
+        $elemMatch: {
+            $regex: /ary/
+        }
+    }
+}, {
+    actors: {
+        $elemMatch: {
+            $regex: /ary/
+        }
+    }
+})
+
+// Přidání prvku nakonec pole:
+db.movies.find({title: "Dracula"})
+db.movies.updateMany({ title: "Dracula" }, { $push: { actors: "Anthony Hopkins" } })
+db.movies.find({title: "Dracula"})
+
+// Vytvoří jednoprvkové pole:
+db.movies.find({title: "The Conversation" })
+db.movies.updateMany({ title: "The Conversation"  }, { $push: { actors: "Gene Hackman" } })
+db.movies.find({title: "The Conversation" })
+
+// Chyba položka není pole:
+/*
+db.movies.find({title: "The Dark Knight"})
+db.movies.updateMany({ title: "The Dark Knight"  }, { $push: { actors: "Christian Bale" }})
+db.movies.find({title: "The Dark Knight"})
+*/
+
+// Odebrání z konce pole:
+db.movies.find({title: "Dracula"})
+db.movies.updateMany({ title: "Dracula"  }, { $pop: { actors: 1 }})
+db.movies.find({title: "Dracula"})
+
+ 
+ db.movies.updateMany({ title: "The Conversation"  }, { $unset: { actors: 1 }})
+
+ // Nic se nestane:
+ db.movies.find({title: "The Conversation"})
+ db.movies.updateMany({ title: "The Conversation"  }, { $pop: { actors: 1 } })
+ db.movies.find({title: "The Conversation" })
+
+
+// Chyba položka není pole:
+/*
+db.movies.find({title: "The Dark Knight"})
+db.movies.updateMany({ title:  "The Dark Knight"  }, { $pop: { actors: 1 }})
+db.movies.find({title: "The Dark Knight"})
+*/
+
+// Převedeme položku na pole:
+db.movies.updateMany({ title:  "The Dark Knight"  }, { $set: { actors: [ "Gary Oldman" ] } })
+
+// Odstraníme všechny prvky pole splňující podmínku:
+db.movies.updateMany({}, { $pull: { actors: "Gary Oldman" } })

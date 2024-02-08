@@ -1,0 +1,217 @@
+# Typy hodnot položek dokumentů v indexu
+# Testovací index:
+DELETE {{host}}/book HTTP/1.1
+
+###
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "title": "The Fellowship of the Ring"
+}
+
+###
+# Deklarace typů položek:
+GET {{host}}/book/_mapping HTTP/1.1
+
+
+###
+PUT {{host}}/book/_doc/2 HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Two Towers"
+}
+###
+# Provedla se deklarace položky "title" typu "text":
+GET {{host}}/book/_mapping HTTP/1.1
+
+
+###
+# Deklarujeme položku "state" typu "keyword":
+PUT {{host}}/book/_mapping HTTP/1.1
+
+{
+  "properties": {
+    "state": { "type": "keyword" }
+  }
+}
+###
+# Ověříme:
+GET {{host}}/book/_mapping HTTP/1.1
+
+###
+# Změníme dokumenty tak, aby obsahovaly položku "state".
+
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Fellowship of the Ring",
+  "state": "old"
+}
+
+###
+PUT {{host}}/book/_doc/2 HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Two Towers",
+  "state": "new"
+}
+
+
+
+###
+# Vyhledávání nových knížek:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "state": { 
+        "query": "new"
+      }
+    }
+  }
+}
+
+###
+# Protože se neprovádí analýza hodnoty,
+# následující dotaz nic nevrátí.
+
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "state": { 
+        "query": "New"
+      }
+    }
+  }
+}
+
+###
+# Ani tento dotaz nic nevrátí:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "state": { 
+        "query": "new old"
+      }
+    }
+  }
+}
+
+###
+# Přesná shoda:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "state": { 
+        "value": "new"
+      }
+    }
+  }
+}
+
+###
+# K dalším indexovaným hodnotám lze přistupovat přes tečkovou notaci:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "author.keyword": { 
+        "value": "John Ronald Reuel Tolkien"
+      }
+    }
+  }
+}
+###
+# Nic nenajde:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "author.keyword": { 
+        "value": "John Ronald Reuel tolkien"
+      }
+    }
+  }
+}
+
+###
+# Deklarujeme klíč "series" textového typu:
+PUT {{host}}/book/_mapping HTTP/1.1
+
+{
+  "properties": {
+    "series": { "type": "text" }
+  }
+}
+
+###
+# Ověříme deklarace klíčů:
+GET {{host}}/book/_mapping HTTP/1.1
+
+###
+# Změníme dokument:
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Fellowship of the Ring",
+  "series": "The Lord of the Rings"
+}
+###
+# Knihu najdeme:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "series": { 
+        "query": "The Lord of the Rings"
+      }
+    }
+  }
+}
+
+###
+# Nic nevrátí:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "term": {
+      "series.keyword": { 
+        "value": "The Lord of the Rings"
+      }
+    }
+  }
+}
+
+###
+# Deklarace typu při vytvoření indexu:
+DELETE {{host}}/book HTTP/1.1
+
+###
+PUT {{host}}/book HTTP/1.1
+
+{
+  "mappings":{
+    "properties": {
+      "tags": { "type": "keyword" },
+      "title": { "type": "text" }
+    }
+  }
+}
+
+###
+GET {{host}}/book/_mapping HTTP/1.1

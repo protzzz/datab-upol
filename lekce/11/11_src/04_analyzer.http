@@ -1,0 +1,15 @@
+# Analyzer
+POST {{host}}/_analyze HTTP/1.1
+
+{
+  "analyzer": "standard",
+  "text": "The Hobbit, or There and Back Again"
+}
+
+###
+POST {{host}}/_analyze HTTP/1.1
+
+{
+  "analyzer": "standard",
+  "text": "THE-HoBBit"
+}

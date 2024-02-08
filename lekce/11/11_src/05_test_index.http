@@ -1,0 +1,73 @@
+# Testovací index obsahuje dokumenty o knihách.
+
+# Existující index případně smažeme:
+DELETE {{host}}/book HTTP/1.1
+
+###
+# Vložení dokumentu vytvoří index:
+POST {{host}}/book/_doc HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Fellowship of the Ring",
+  "series": "The Lord of the Rings"
+}
+
+###
+
+POST {{host}}/book/_doc HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Two Towers",
+  "series": "The Lord of the Rings"
+}
+
+###
+
+POST {{host}}/book/_doc HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Return of the King",
+  "series": "The Lord of the Rings"
+}
+
+###
+
+POST {{host}}/book/_doc HTTP/1.1
+
+{
+  "author": "John Ronald Reuel Tolkien",
+  "title": "The Hobbit, or There and Back Again"
+}
+
+###
+
+POST {{host}}/book/_doc HTTP/1.1
+
+{
+  "author": "Mervyn Peake",
+  "title": "Titus Groan",
+  "series": "Gormenghast"
+}
+
+###
+
+POST {{host}}/book/_doc HTTP/1.1
+
+{
+  "author": "Mervyn Peake",
+  "title": "Gormenghast",
+  "series": "Gormenghast"
+}
+
+###
+
+POST {{host}}/book/_doc HTTP/1.1
+
+{
+  "author": "Mervyn Peake",
+  "title": "Titus Alone",
+  "series": "Gormenghast"
+}

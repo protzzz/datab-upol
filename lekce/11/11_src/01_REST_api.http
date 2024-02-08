@@ -1,0 +1,3 @@
+# Zkouška spojení
+GET {{host}}/ HTTP/1.1
+

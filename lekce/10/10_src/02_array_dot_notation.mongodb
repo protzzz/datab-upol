@@ -1,0 +1,72 @@
+// Tečková notace v poli
+
+use("moviedb")
+
+db.directors.drop()
+
+db.directors.insertMany([{
+    name: ["Andrei", null, "Tarkovsky"]
+}, {
+    name: ["Francis", "Ford", "Coppola"]
+}, {
+    name: ["Gia", null, "Coppola"]
+}, {
+    name: ["George", "Roy", "Hill"]
+}, {
+    name: ["Roy", null, "Andersson"]
+}])
+
+db.directors.find()
+
+
+db.directors.find({
+    name: {
+        $elemMatch: {
+            $eq: "Roy"
+        }
+    }
+})
+
+// Zkráceně:
+db.directors.find({
+    name: "Roy"
+})
+
+// Použití tečkové notace:
+db.directors.find({
+    "name.0": "Roy"
+})
+
+
+// Změny:
+db.directors.find({
+    "name.0": "Francis",
+    "name.2": "Coppola"
+})
+
+db.directors.updateMany({
+    name: ["Francis", "Ford", "Coppola"]
+}, {
+    $set: {
+        "name.1": null
+    }
+})
+
+db.directors.find({
+    "name.0": "Francis",
+    "name.2": "Coppola"
+})
+
+db.directors.updateMany({
+    "name.0": "Francis",
+    "name.2": "Coppola"
+}, {
+    $set: {
+        "name.4": "Ford"
+    }
+})
+
+db.directors.find({
+    "name.0": "Francis",
+    "name.2": "Coppola"
+})

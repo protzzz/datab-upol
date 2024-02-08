@@ -1,0 +1,64 @@
+6.3.2012 10:23
+Vyjimka:Odkaz na objekt není nastaven na instanci objektu.
+Stack:   v ERTOS.MainForm.MainForm_Paint(Object sender, PaintEventArgs e) v c:\documents and settings\hanka\dokumenty\visual studio projects\ertos\mainform.cs:řádek 261
+   v System.Windows.Forms.Control.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Form.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Control.PaintWithErrorHandling(PaintEventArgs e, Int16 layer, Boolean disposeEventArgs)
+   v System.Windows.Forms.Control.WmPaint(Message& m)
+   v System.Windows.Forms.Control.WndProc(Message& m)
+   v System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   v System.Windows.Forms.ContainerControl.WndProc(Message& m)
+   v System.Windows.Forms.Form.WndProc(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   v System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+********************************************************
+
+6.3.2012 13:24
+Vyjimka:Odkaz na objekt není nastaven na instanci objektu.
+Stack:   v ERTOS.MainForm.MainForm_Paint(Object sender, PaintEventArgs e) v c:\documents and settings\hanka\dokumenty\visual studio projects\ertos\mainform.cs:řádek 261
+   v System.Windows.Forms.Control.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Form.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Control.PaintWithErrorHandling(PaintEventArgs e, Int16 layer, Boolean disposeEventArgs)
+   v System.Windows.Forms.Control.WmPaint(Message& m)
+   v System.Windows.Forms.Control.WndProc(Message& m)
+   v System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   v System.Windows.Forms.ContainerControl.WndProc(Message& m)
+   v System.Windows.Forms.Form.WndProc(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   v System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+********************************************************
+
+13.3.2012 13:04
+Vyjimka:Odkaz na objekt není nastaven na instanci objektu.
+Stack:   v ERTOS.MainForm.MainForm_Paint(Object sender, PaintEventArgs e) v c:\documents and settings\hanka\dokumenty\visual studio projects\ertos\mainform.cs:řádek 261
+   v System.Windows.Forms.Control.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Form.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Control.PaintWithErrorHandling(PaintEventArgs e, Int16 layer, Boolean disposeEventArgs)
+   v System.Windows.Forms.Control.WmPaint(Message& m)
+   v System.Windows.Forms.Control.WndProc(Message& m)
+   v System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   v System.Windows.Forms.ContainerControl.WndProc(Message& m)
+   v System.Windows.Forms.Form.WndProc(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   v System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+********************************************************
+
+20.3.2012 13:17
+Vyjimka:Odkaz na objekt není nastaven na instanci objektu.
+Stack:   v ERTOS.MainForm.MainForm_Paint(Object sender, PaintEventArgs e) v c:\documents and settings\hanka\dokumenty\visual studio projects\ertos\mainform.cs:řádek 261
+   v System.Windows.Forms.Control.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Form.OnPaint(PaintEventArgs e)
+   v System.Windows.Forms.Control.PaintWithErrorHandling(PaintEventArgs e, Int16 layer, Boolean disposeEventArgs)
+   v System.Windows.Forms.Control.WmPaint(Message& m)
+   v System.Windows.Forms.Control.WndProc(Message& m)
+   v System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   v System.Windows.Forms.ContainerControl.WndProc(Message& m)
+   v System.Windows.Forms.Form.WndProc(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   v System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   v System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+********************************************************
+

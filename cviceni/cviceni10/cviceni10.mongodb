@@ -1,0 +1,121 @@
+const database = "cviceni08";
+const collection = "osoby";
+
+// The current database to use.
+use(database);
+
+// Create a new collection.
+db.createCollection(collection);
+
+db.osoby.insertMany([
+  {
+    jmeno: "Jiří",
+    prijmeni: "Zacpal",
+    rocnik: 1,
+    datum_zahajeni_studia: { $date: "2021-01-14T23:00:00Z" },
+    stav: "studuje",
+    pohlavi: "muž",
+    adresa: { mesto: "Olomouc", ulice: "Jeremiášova", cp: 874, psc: "779 00" },
+    predmety: [
+      { zkratka: "KMI/DATAB", ukoncen: true },
+      { zkratka: "KMI/STRUP", ukoncen: false },
+    ],
+  },
+  {
+    jmeno: "Martina",
+    prijmeni: "Kučerová",
+    rocnik: 1,
+    stav: "studuje",
+    pohlavi: "žena",
+    adresa: { mesto: "Olomouc", ulice: "Komenského", cp: 43, psc: "770 00" },
+    predmety: [
+      { zkratka: "KMI/ZPP1", ukoncen: false },
+      { zkratka: "KMI/WEBA", ukonceny: true },
+      { zkratka: "KMI/STRUP", kreukoncen: true },
+    ],
+  },
+  {
+    jmeno: "Karel",
+    prijmeni: "Svoboda",
+    rocnik: 1,
+    datum_zahajeni_studia: { $date: "2021-11-24T08:36:34.169Z" },
+    stav: "studuje",
+    pohlavi: "muž",
+    adresa: { mesto: "Olomouc", ulice: "Palackého", cp: 12, psc: "779 00" },
+    predmety: [
+      { zkratka: "KMI/DATAB", ukoncen: false },
+      { zkratka: "KMI/ZPP1", ukoncen: true },
+    ],
+  },
+  {
+    jmeno: "Pavel",
+    prijmeni: "Novák",
+    rocnik: 1,
+    stav: "nestuduje",
+    pohlavi: "muž",
+    adresa: { mesto: "Prostějov", ulice: "Olomoucká", cp: 45 },
+    predmety: [
+      { zkratka: "KMI/WEBA", ukoncen: true },
+      { zkratka: "KMI/ZPC1", ukoncen: false },
+    ],
+  },
+]);
+
+db.predmety.insertMany([
+  {
+    nazev: "Databáze",
+    katedra: "KMI",
+    zkratka: "DATAB",
+    ucitel: { jmeno: "Jiří", prijmeni: "Zacpal" },
+    ucebna: "5.004",
+    zapsani: [
+      { jmeno: "Karel", prijmeni: "Novák" },
+      { jmeno: "Alena", prijmeni: "Novotná" },
+      { jmeno: "Patrik", prijmeni: "Berger" },
+    ],
+  },
+  {
+    nazev: "Základy programování 1",
+    katedra: "KMI",
+    zkratka: "ZPC1",
+    ucitel: { jmeno: "Arnošt", prijmeni: "Večerka" },
+    ucebna: "5.003",
+    zapsani: [
+      { jmeno: "Pavel", prijmeni: "Novák" },
+      { jmeno: "Marie", prijmeni: "Dlouhá" },
+    ],
+  },
+  {
+    nazev: "Algebra 1",
+    katedra: "KMA",
+    zkratka: "ALG1",
+    ucitel: { jmeno: "Jiří", prijmeni: "Zacpal" },
+    ucebna: "5.004",
+    zapsani: [
+      { jmeno: "Marie", prijmeni: "Dlouhá" },
+      { jmeno: "Patrik", prijmeni: "Berger" },
+    ],
+  },
+  {
+    nazev: "Struktura počítačů",
+    katedra: "KMI",
+    zkratka: "STRUP",
+    ucitel: { jmeno: "Jiří", prijmeni: "Zacpal" },
+    ucebna: "5.004",
+    zapsani: [
+      { jmeno: "Václav", prijmeni: "Král" },
+      { jmeno: "Alena", prijmeni: "Novotná" },
+    ],
+  },
+  {
+    nazev: "Algebra 2",
+    katedra: "KMA",
+    zkratka: "ALG2",
+    ucitel: { jmeno: "Arnošt", prijmeni: "Večerka" },
+    ucebna: "5.004",
+    zapsani: [
+      { jmeno: "Karel", prijmeni: "Novák" },
+      { jmeno: "Patrik", prijmeni: "Berger" },
+    ],
+  },
+]);

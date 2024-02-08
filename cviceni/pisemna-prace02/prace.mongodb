@@ -1,0 +1,155 @@
+const database = "pisemna_prace02";
+
+use(database);
+
+db.studenti.insertMany([
+  {
+    osCislo: "R14735",
+    jmeno: "Adéla",
+    prijmeni: "KOPECKÁ",
+    stav: "S",
+    oborNazev: "Aplikovaná matematika",
+    rocnik: 1,
+    email: "kopead00@prfnw.upol.cz",
+    pohlavi: "Ž",
+    body: 20,
+    zapocet: "Ano",
+  },
+  {
+    osCislo: "R14739",
+    jmeno: "Alena",
+    prijmeni: "KRBCOVÁ",
+    stav: "S",
+    oborNazev: "Informacni systémy",
+    rocnik: 1,
+    email: "krbcal00@prfnw.upol.cz",
+    pohlavi: "Ž",
+    body: 0,
+    zapocet: "Ne",
+  },
+  {
+    osCislo: "R14770",
+    jmeno: "Ivana",
+    prijmeni: "PERESTÁ",
+    stav: "S",
+    oborNazev: "Informacni systémy",
+    rocnik: 1,
+    email: "pereiv00@prfnw.upol.cz",
+    pohlavi: "Ž",
+    body: 15,
+    zapocet: "Ano",
+  },
+  {
+    osCislo: "R14725",
+    jmeno: "Jan",
+    prijmeni: "JAROLIM",
+    stav: "S",
+    oborNazev: "Aplikovaná matematika",
+    rocnik: 1,
+    email: "jaroja05@prfnw.upol.cz",
+    pohlavi: "M",
+    body: 4,
+    zapocet: "Ne",
+  },
+  {
+    osCislo: "R14702",
+    jmeno: "Karolina",
+    prijmeni: "DUDOVÁ",
+    stav: "S",
+    oborNazev: "Aplikovaná matematika",
+    rocnik: 1,
+    email: "dudoka00@prfnw.upol.cz",
+    pohlavi: "Ž",
+    body: 0,
+    zapocet: "Ano",
+  },
+  {
+    osCislo: "R14762",
+    jmeno: "Nikola",
+    prijmeni: "NOVÁKOVÁ",
+    stav: "S",
+    oborNazev: "Informacni systémy",
+    rocnik: 1,
+    email: "novani01@prfnw.upol.cz",
+    pohlavi: "Ž",
+    body: 18,
+    zapocet: "Ne",
+  },
+  {
+    osCislo: "R14708",
+    jmeno: "Olga",
+    prijmeni: "GRULICHOVÁ",
+    stav: "S",
+    oborNazev: "Aplikovaná matematika",
+    rocnik: 1,
+    email: "1grul0100@prfnw.upol.cz",
+    pohlavi: "Ž",
+    body: 5,
+    zapocet: "Ano",
+  },
+  {
+    osCislo: "R14743",
+    jmeno: "Ondrej",
+    prijmeni: "KUBIK",
+    stav: "S",
+    oborNazev: "Informacni systémy",
+    rocnik: 1,
+    email: "kubion02@prfnw.upol.cz",
+    pohlavi: "M",
+    body: 10,
+    zapocet: "Ne",
+  },
+  {
+    osCislo: "R14689",
+    jmeno: "Patrícia",
+    prijmeni: "BÁLINTOVÁ",
+    stav: "S",
+    oborNazev: "Aplikovaná matematika",
+    rocnik: 1,
+    email: "balipa00@prfnw.upol.cz",
+    pohlavi: "Ž",
+    body: 6,
+    zapocet: "Ano",
+  },
+]);
+
+db.studenti.deleteMany({ body: 0 });
+
+db.studenti.updateMany(
+  { oborNazev: "Informacni systémy" },
+  {
+    $set: {
+      predmety: ["KMI/DATAB", "KMI/ZPP1"]
+    }
+  }
+);
+
+db.studenti.updateMany(
+  { zapocet: "Ano" },
+  {
+    $set: {
+      zapocet: {
+        zapocteno: true,
+        datum: new Date()
+      }
+    }
+  }
+);
+
+db.studenti.find({ prijmeni: /U/i });
+
+db.studenti.find({ pohlavi: "Ž", body: { $gt: 10 } }, { jmeno: 1, prijmeni: 1});
+
+db.studenti.aggregate([
+  {
+    $group: {
+      _id: "$pohlavi",
+      pocet_bodu: { $avg: "$body" }
+    }
+  }
+]);
+
+db.studenti.find();
+
+
+

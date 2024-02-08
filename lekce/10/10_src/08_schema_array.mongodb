@@ -1,0 +1,32 @@
+// Kontrola vnořených hodnot
+
+use("moviedb")
+
+db.directors.drop()
+
+db.createCollection("directors", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                name: {
+                    bsonType: "array",
+                    items: {
+                        bsonType: "string"
+                    }
+                }
+            }
+        }
+    }
+})
+
+db.directors.insertMany([{
+    name: ["Francis", "Ford", "Coppola"]
+}])
+
+db.directors.find()
+
+// Chyba:
+db.directors.insertMany([{
+    name: ["Andrei", null, "Tarkovsky"]
+}])

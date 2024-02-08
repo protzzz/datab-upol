@@ -1,0 +1,34 @@
+# Skóre zásahu
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "the"
+      }
+    }
+  },
+  "explain": true
+}
+
+# Zásah do knihy The Fellowship of the Ring má větší skóre 
+# než zásah do knihy he Hobbit, or There and Back Again.
+#
+# Název první knihy obsahuje dvě slova z dotazu, 
+# ale název druhé knihy jen jedno.
+
+###
+# Další příklad:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match": {
+      "title": { 
+        "query": "fellowship ring hobbit"
+      }
+    }
+  },
+  "explain": true
+} 

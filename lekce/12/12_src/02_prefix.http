@@ -1,0 +1,121 @@
+# Prefix
+# Testovací index:
+DELETE {{host}}/book HTTP/1.1
+
+###
+PUT {{host}}/book/_doc/1 HTTP/1.1
+
+{
+  "title": "The Fellowship of the Ring"
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "prefix": {
+      "title": {
+        "value": "fell"
+      }
+    }
+  }
+}
+###
+# Velikost písmen je důležitá:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "prefix": {
+      "title": {
+        "value": "Fell"
+      }
+    }
+  }
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match_phrase_prefix" : { 
+      "title" : {
+        "query" : "The Fell"
+      } 
+   }
+  },
+  "explain": true
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match_phrase_prefix" : { 
+      "title" : {
+        "query" : "the fell"
+      } 
+   }
+  }
+}
+
+###
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match_phrase_prefix" : { 
+      "title" : {
+        "query" : "Fell"
+      } 
+   }
+  },
+  "explain": true
+}
+
+###
+# Nic nenajde:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match_phrase_prefix" : { 
+      "title" : {
+        "query" : "Ring Fell"
+      } 
+   }
+  }
+}
+
+###
+# Nic nenajde:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match_phrase_prefix" : { 
+      "title" : {
+        "query" : "Fellowship Rin"
+      } 
+   }
+  }
+}
+
+###
+# Vynechání termů:
+GET {{host}}/book/_search HTTP/1.1
+
+{
+  "query": {
+    "match_phrase_prefix" : { 
+      "title" : {
+        "query" : "Fellowship Rin",
+        "slop" : 2
+      } 
+   }
+  }
+}
+

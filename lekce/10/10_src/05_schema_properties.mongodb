@@ -1,0 +1,53 @@
+// Dokumenty v kolekci musí mít položky zadaných typů.
+
+use("moviedb")
+
+db.movies.drop()
+
+db.createCollection("movies", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         properties: {
+            title: {
+               bsonType: "string",
+            },
+            year: {
+               bsonType: "int"
+            },
+            length: {
+               bsonType: "int"
+            }
+         }
+      }
+   }
+} )
+
+
+db.movies.insertMany([{
+        title: "The Matrix",
+        year: 1999,
+        length: 136
+    }
+])
+
+db.movies.insertMany([{
+   title: "Cloud Atlas",
+   year: 2012
+}])
+
+// Chyba:
+db.movies.insertMany([{
+   length: "Harry Potter and the Philosopher's Stone",
+   title: 152
+}])
+
+
+
+db.movies.insertMany([{
+        title: "The Avengers",
+        year: 1998,
+        length: 89,
+        own: true
+    }
+])
